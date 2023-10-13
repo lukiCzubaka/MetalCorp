@@ -2,9 +2,29 @@ const body = document.querySelector('body')
 const burgerBtn = document.querySelector('.burgerBtn')
 const nav = document.querySelector('nav')
 const sections = document.querySelectorAll('section')
-// const desktopNavs = document.querySelectorAll('.desktopNavs>a')
 const mobileNavs = document.querySelectorAll('.mobileNav>a')
+const desktopNavs = document.querySelectorAll('.desktopNav__links>a')
 const buttons = document.querySelectorAll('button')
+
+const scrollSpy = new IntersectionObserver(
+	entries =>
+		entries.forEach(entry => {
+			desktopNavs.forEach(desktopNav => desktopNav.classList.remove('activeLink'))
+
+			const link = document.querySelector(`a[href='#${entry.target.id}']`)
+
+			link.classList.toggle('activeLink', entry.isIntersecting)
+			console.log(link)
+		}),
+	{
+		threshold: 0.5,
+		rootMargin: '-100px',
+	}
+)
+
+sections.forEach(section => {
+	scrollSpy.observe(section)
+})
 
 const navBar = () => {
 	body.classList.toggle('hidden')
@@ -23,6 +43,7 @@ const controleHeight = () => {
 		})
 	}
 }
+
 const controleWidth = () => {
 	if (/iPhone|Android/i.test(navigator.userAgent) || navigator.maxTouchPoints > 0) {
 		const sliderImgs = [...document.querySelectorAll('.slider__img')]
@@ -34,6 +55,7 @@ const controleWidth = () => {
 		})
 	}
 }
+
 const resize = () => {
 	let vh = window.innerHeight * 0.01
 	document.documentElement.style.setProperty('--vh', `${vh}px`)
@@ -43,27 +65,10 @@ burgerBtn.addEventListener('touchstart', navBar)
 mobileNavs.forEach(mobileNav => mobileNav.addEventListener('touchstart', navBar))
 buttons.forEach(button =>
 	button.addEventListener('touchstart', () => {
-		button.classList.toggle('hover')
+		button.classList.toggle('activeLink')
 	})
 )
-buttons.forEach(button => button.addEventListener('touchend', () => button.classList.remove('hover')))
+buttons.forEach(button => button.addEventListener('touchend', () => button.classList.remove('activeLink')))
 controleHeight()
 controleWidth()
 resize()
-
-// const scrollSpy = new IntersectionObserver(
-// 	entries =>
-// 		entries.forEach(entry => {
-// 			desktopNavs.forEach(desktopNav => desktopNav.classList.remove('activeLink'))
-// 			const link = document.querySelector(`a[href='#${entry.target.id}']`)
-// 			link.classList.toggle('activeLink', entry.isIntersecting)
-// 		}),
-// 	{
-// 		threshold: 0.5,
-// 		rootMargin: '-100px',
-// 	}
-// )
-
-// sections.forEach(section => {
-// 	scrollSpy.observe(section)
-// })
