@@ -318,6 +318,9 @@ footer {
 	}
 
 	nav {
+		position: fixed;
+		width: 100%;
+		z-index: 10;
 		.burgerBtn {
 			display: none;
 		}
@@ -433,7 +436,7 @@ footer {
 .hidden .mobileNav {
 	transform: translateY(0);
 }
-.hover {
+.activeLink {
 	background-color: $black;
 	color: $yellow;
 }
